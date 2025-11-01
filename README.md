@@ -228,6 +228,13 @@ Con este proyecto los alumnos aprenderán a:
 
 ---
 
+## 🎓 Tarea del taller no realizada en este GIT
+
+Aplicar el cambio de estructura con la extensión de los nuevos controladores
+Analizar como afecta el autocrad a las rutas y analizar si debemos cambiar algo.
+
+---
+
 ✍️ **Autor:**  
 Carlos Basulto Pardo — Profesor de Desarrollo de Aplicaciones Multiplataforma y Web  
 📍 EUSA Sevilla
