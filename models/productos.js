@@ -14,10 +14,6 @@ export default class productos extends Model {
       type: DataTypes.STRING(100),
       allowNull: false
     },
-    descripcion: {
-      type: DataTypes.TEXT,
-      allowNull: true
-    },
     precio: {
       type: DataTypes.DECIMAL(10,2),
       allowNull: false
@@ -26,6 +22,10 @@ export default class productos extends Model {
       type: DataTypes.INTEGER,
       allowNull: true,
       defaultValue: 0
+    },
+    descripcion: {
+      type: DataTypes.TEXT,
+      allowNull: true
     },
     categoria_id: {
       type: DataTypes.INTEGER,

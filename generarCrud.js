@@ -5,10 +5,11 @@ const controllersPath = "./controllers";
 const routesPath = "./routes";
 const initModelsPath = "./models/init-models.js";
 
+// Crear carpetas si no existen
 fs.mkdirSync(controllersPath, { recursive: true });
 fs.mkdirSync(routesPath, { recursive: true });
 
-// Cabecera común que usarán todos los controladores
+// Cabecera común para todos los controladores
 const commonHeader = `
 import { sequelize } from "../config/db.js";
 import initModels from "../models/init-models.js";
@@ -16,16 +17,16 @@ import initModels from "../models/init-models.js";
 const models = initModels(sequelize);
 `;
 
-// Capitalizar primera letra
+// Función para capitalizar nombres (solo para títulos y mensajes)
 const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
-// 1️⃣ Comprobar que init-models.js existe
+// Verificar existencia del archivo init-models.js
 if (!fs.existsSync(initModelsPath)) {
   console.error("❌ No se encontró el archivo models/init-models.js");
   process.exit(1);
 }
 
-// 2️⃣ Leer contenido y extraer los nombres de modelos del return { ... }
+// Leer contenido y extraer nombres de modelos del return { ... }
 const initModelsFile = fs.readFileSync(initModelsPath, "utf8");
 const returnBlockMatch = initModelsFile.match(/return\s*{([^}]+)}/);
 if (!returnBlockMatch) {
@@ -33,6 +34,7 @@ if (!returnBlockMatch) {
   process.exit(1);
 }
 
+// Extraer los nombres de modelo literal tal como aparecen
 const modelNames = returnBlockMatch[1]
   .split(",")
   .map(m => m.trim().replace(/[\s\n\r]+/g, ""))
@@ -45,12 +47,12 @@ if (modelNames.length === 0) {
 
 console.log(`📦 Modelos detectados: ${modelNames.join(", ")}`);
 
-// 3️⃣ Generar CRUD para cada modelo detectado
+// Generar CRUD automáticamente para cada modelo detectado
 for (const modelName of modelNames) {
   const modelVar = modelName;
   const className = capitalize(modelName);
 
-  // Controlador
+  // CONTROLADOR
   const controllerContent = `
 ${commonHeader}
 const { ${modelVar} } = models;
@@ -110,9 +112,10 @@ export const remove = async (req, res) => {
 };
 `;
 
+  // Guardar controlador
   fs.writeFileSync(`${controllersPath}/${modelName}Controller.js`, controllerContent.trimStart());
 
-  // Rutas
+  // RUTAS
   const routesContent = `
 import express from "express";
 import { getAll, getOne, create, update, remove } from "../controllers/${modelName}Controller.js";
