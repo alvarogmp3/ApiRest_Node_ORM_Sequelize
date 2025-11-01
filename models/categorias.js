@@ -1,7 +1,7 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class productos extends Model {
+export default class categorias extends Model {
   static init(sequelize, DataTypes) {
   return super.init({
     id: {
@@ -11,22 +11,17 @@ export default class productos extends Model {
       primaryKey: true
     },
     nombre: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING(100),
       allowNull: false
     },
-    precio: {
-      type: DataTypes.FLOAT,
-      allowNull: false
-    },
-    stock: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      defaultValue: 0
+    descripcion: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'productos',
-    timestamps: true,
+    tableName: 'categorias',
+    timestamps: false,
     indexes: [
       {
         name: "PRIMARY",

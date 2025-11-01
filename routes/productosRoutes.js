@@ -1,3 +1,4 @@
+// routes/productosRoutes.js
 import express from "express";
 import {
   crearProducto,
@@ -9,9 +10,9 @@ import {
 
 const router = express.Router();
 
-router.post("/", crearProducto);
 router.get("/", obtenerProductos);
 router.get("/:id", obtenerProducto);
+router.post("/", crearProducto);
 router.put("/:id", actualizarProducto);
 router.delete("/:id", eliminarProducto);
 
