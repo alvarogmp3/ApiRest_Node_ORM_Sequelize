@@ -1,5 +1,6 @@
 import express from "express";
 import productoRoutes from "./routes/productoRoutes.js";
+import pedidosRoutes from "./routes/pedidosRoutes.js";
 import { sequelize } from "./config/db.js";
 
 const app = express();
@@ -7,6 +8,7 @@ app.use(express.json());
 
 // Rutas
 app.use("/productos", productoRoutes);
+//app.use("/pedidos", pedidosRoutes);
 
 // Sincronizar base de datos
 (async () => {

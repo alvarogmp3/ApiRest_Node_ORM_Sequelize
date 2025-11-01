@@ -1,5 +1,5 @@
 import express from "express";
-import { getAll, getOne, create, update, remove } from "../controllers/productoController.js";
+import { getAll, getOne, create, update, remove } from "../controllers/categoriasController.js";
 const router = express.Router();
 
 router.get("/", getAll);
