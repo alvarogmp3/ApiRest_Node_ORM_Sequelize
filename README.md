@@ -86,6 +86,14 @@ http://localhost:3000
 - Evita escribir manualmente operaciones CRUD repetitivas.  
 - Cada vez que se ejecuta (`node autocrud.js`), actualiza los controladores base según los modelos actuales.
 
+### 🎓 Tarea del taller no realizada en este GIT
+
+Modificar un controlador, por ejemplo producto.
+Añadir una nueva tabla al sistema y aplicar la nueva generación y autocrud--> Esto generará un problema de arquitectura ya que borrará los cambios realizados en el punto anterior.
+Aplicar el cambio de estructura con la extensión de los nuevos controladores, psra evitar perder cambios en las generaciones automáticas
+Analizar como afecta el autocrad a las rutas y analizar si debemos cambiar algo.
+
+
 ---
 
 ## 🧠 Patrón de diseño aplicado
