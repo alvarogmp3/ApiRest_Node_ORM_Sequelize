@@ -9,6 +9,17 @@ const Categoria = categorias.init(sequelize, DataTypes);
 // CREATE
 export const crearCategoria = async (req, res) => {
   try {
+
+    //Podemos mejorar nuestros controladores para realizar validaciones
+     const { nombre } = req.body;
+  // 🔍 Buscar si ya existe
+    const existente = await Categoria.findOne({ where: { nombre } });
+
+    if (existente) {
+      return res.status(400).json({ mensaje: "❌ La categoría ya existe." });
+    }
+    
+    //Si no existe la creamos
     const nuevo = await Categoria.create(req.body);
     res.status(201).json(nuevo);
   } catch (error) {
