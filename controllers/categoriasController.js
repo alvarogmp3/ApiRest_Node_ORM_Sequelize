@@ -12,7 +12,7 @@ export const crearCategoria = async (req, res) => {
 
     //Podemos mejorar nuestros controladores para realizar validaciones
      const { nombre } = req.body;
-  // 🔍 Buscar si ya existe
+    // Buscar si ya existe
     const existente = await Categoria.findOne({ where: { nombre } });
 
     if (existente) {
