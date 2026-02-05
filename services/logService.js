@@ -1,4 +1,4 @@
-import m from "../models/detalles_pedido.js";
+import m from "../models/log.js";
 export const getAll = async () => await m.findAll();
 export const getById = async (id) => await m.findByPk(id);
 export const create = async (d) => await m.create(d);

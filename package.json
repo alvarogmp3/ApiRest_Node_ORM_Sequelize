@@ -1,30 +1,19 @@
 {
-  "name": "apirest_node_orm_sequelize",
+  "name": "api-rest-node-orm",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "type": "module",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon run server.js"
+    "dev": "nodemon server.js",
+    "crud": "node autocrud.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/CarlosBasulto/ApiRest_Node_ORM_Sequelize.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/CarlosBasulto/ApiRest_Node_ORM_Sequelize/issues"
-  },
-  "homepage": "https://github.com/CarlosBasulto/ApiRest_Node_ORM_Sequelize#readme",
   "dependencies": {
-    "express": "^5.1.0",
-    "mysql2": "^3.15.3",
-    "sequelize": "^6.37.7"
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mysql2": "^3.6.0",
+    "sequelize": "^6.33.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10",
-    "sequelize-auto": "^0.8.8"
+    "nodemon": "^3.0.1"
   }
 }

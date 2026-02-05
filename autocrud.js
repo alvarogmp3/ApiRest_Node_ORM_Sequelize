@@ -1,56 +1,56 @@
 import fs from "fs";
 import path from "path";
 
-const modelsPath = "./models";
-const controllersBasePath = "./controllers/base"; 
-const routesPath = "./routes";
-const servicesPath = "./services";
-
-fs.mkdirSync(controllersBasePath, { recursive: true });
-fs.mkdirSync(routesPath, { recursive: true });
-fs.mkdirSync(servicesPath, { recursive: true });
-
-const models = fs.readdirSync(modelsPath).filter(f => f.endsWith(".js") && f !== "init-models.js" && f !== "db.js");
-
-for (const modelFile of models) {
-    const modelName = path.basename(modelFile, ".js").toLowerCase();
-    const modelClass = modelName.charAt(0).toUpperCase() + modelName.slice(1);
-
-    // 1. SERVICIO: Acceso a datos (Requisito 2.4)
-    const serviceContent = `import ${modelClass} from "../models/${modelFile}";
-export const getAll = async () => await ${modelClass}.findAll();
-export const getById = async (id) => await ${modelClass}.findByPk(id);
-export const create = async (data) => await ${modelClass}.create(data);
-export const update = async (id, data) => {
-    const item = await ${modelClass}.findByPk(id);
-    return item ? await item.update(data) : null;
+const config = {
+    models: "./models",
+    controllers: "./controllers",
+    base: "./controllers/base",
+    routes: "./routes",
+    services: "./services"
 };
-export const remove = async (id) => {
-    const item = await ${modelClass}.findByPk(id);
-    return item ? await item.destroy() : null;
-};`;
-    fs.writeFileSync(`${servicesPath}/${modelName}Service.js`, serviceContent);
 
-    // 2. CONTROLADOR BASE: Genérico (Pág. 11)
-    const controllerBaseContent = `import * as Service from "../../services/${modelName}Service.js";
-export const listar = async (req, res) => res.json(await Service.getAll());
-export const obtener = async (req, res) => res.json(await Service.getById(req.params.id));
-export const crear = async (req, res) => res.status(201).json(await Service.create(req.body));
-export const actualizar = async (req, res) => res.json(await Service.update(req.params.id, req.body));
-export const eliminar = async (req, res) => res.json(await Service.remove(req.params.id));`;
-    fs.writeFileSync(`${controllersBasePath}/${modelName}BaseController.js`, controllerBaseContent);
+// Crear carpetas
+Object.values(config).forEach(dir => { if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true }); });
 
-    // 3. RUTA: Apunta al controlador extendido (Pág. 12)
-    const routeContent = `import express from "express";
-import * as Controller from "../controllers/${modelName}Controller.js";
-const router = express.Router();
-router.get("/", Controller.listar);
-router.get("/:id", Controller.obtener);
-router.post("/", Controller.crear);
-router.put("/:id", Controller.actualizar);
-router.delete("/:id", Controller.eliminar);
-export default router;`;
-    fs.writeFileSync(`${routesPath}/${modelName}Routes.js`, routeContent);
+const files = fs.readdirSync(config.models).filter(f => f.endsWith(".js") && !["db.js", "init-models.js"].includes(f));
 
-    console.log(`✔ Estructura generada para: ${modelName}`);
-}
+files.forEach(file => {
+    const name = path.basename(file, ".js"); // Mantiene el nombre exacto del archivo
+
+    // 1. Service
+    fs.writeFileSync(`${config.services}/${name}Service.js`, 
+        `import m from "../models/${file}";
+export const getAll = async () => await m.findAll();
+export const getById = async (id) => await m.findByPk(id);
+export const create = async (d) => await m.create(d);
+export const update = async (id, d) => { const i = await m.findByPk(id); return i ? await i.update(d) : null; };
+export const remove = async (id) => { const i = await m.findByPk(id); return i ? await i.destroy() : null; };`);
+
+    // 2. Base Controller
+    fs.writeFileSync(`${config.base}/${name}BaseController.js`, 
+        `import * as s from "../../services/${name}Service.js";
+export const listar = async (req, res) => { try { res.json(await s.getAll()); } catch (e) { res.status(500).json({error: e.message}); } };
+export const obtener = async (req, res) => { try { res.json(await s.getById(req.params.id)); } catch (e) { res.status(500).json({error: e.message}); } };
+export const crear = async (req, res) => { try { res.status(201).json(await s.create(req.body)); } catch (e) { res.status(500).json({error: e.message}); } };
+export const actualizar = async (req, res) => { try { res.json(await s.update(req.params.id, req.body)); } catch (e) { res.status(500).json({error: e.message}); } };
+export const eliminar = async (req, res) => { try { res.json(await s.remove(req.params.id)); } catch (e) { res.status(500).json({error: e.message}); } };`);
+
+    // 3. Final Controller (Sobrescribe para asegurar consistencia)
+    fs.writeFileSync(`${config.controllers}/${name}Controller.js`, 
+        `import * as Base from "./base/${name}BaseController.js";
+export const listar = Base.listar;
+export const obtener = Base.obtener;
+export const crear = Base.crear;
+export const actualizar = Base.actualizar;
+export const eliminar = Base.eliminar;`);
+
+    // 4. Routes
+    fs.writeFileSync(`${config.routes}/${name}Routes.js`, 
+        `import express from "express";
+import * as c from "../controllers/${name}Controller.js";
+const r = express.Router();
+r.get("/", c.listar); r.get("/:id", c.obtener); r.post("/", c.crear); r.put("/:id", c.actualizar); r.delete("/:id", c.eliminar);
+export default r;`);
+
+    console.log(`✔ Estructura completa para: ${name}`);
+});
