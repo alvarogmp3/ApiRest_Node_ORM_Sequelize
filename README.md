@@ -20,4 +20,12 @@ Este proyecto ha sido refactorizado para implementar una **arquitectura MVC redu
    ```bash
    npm install
 
+3. **Generar la estructura CRUD**:
+   ```bash
+   npm run crud
+
+4. **Arrancar el servidor**:
+   ```bash
+   npm run dev
+
 ## Autor: Álvaro García Marchena
