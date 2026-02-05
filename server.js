@@ -8,6 +8,8 @@ import categoriasRoutes from "./routes/categoriasRoutes.js";
 import clientesRoutes from "./routes/clientesRoutes.js";
 import pedidosRoutes from "./routes/pedidosRoutes.js";
 import detallesPedidoRoutes from "./routes/detalles_pedidoRoutes.js";
+// ✅ Añadida ruta de logs (generada por autocrud)
+import logRoutes from "./routes/logRoutes.js"; 
 
 const app = express();
 app.use(express.json());
@@ -30,6 +32,8 @@ app.use("/categorias", categoriasRoutes);
 app.use("/clientes", clientesRoutes);
 app.use("/pedidos", pedidosRoutes);
 app.use("/detalles_pedido", detallesPedidoRoutes);
+// ✅ Registro de la ruta de logs
+app.use("/logs", logRoutes); 
 
 // 🚀 Arrancar servidor
 const PORT = 3000;
