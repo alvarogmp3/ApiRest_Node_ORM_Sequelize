@@ -1,25 +1,28 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from "../config/db.js";
+import { DataTypes, Model } from 'sequelize';
+import { sequelize } from '../config/db.js';
 
-export const Producto = sequelize.define("Productos", {
+class productos extends Model {}
+
+productos.init({
   id: {
     type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
+    primaryKey: true,
+    autoIncrement: true
   },
   nombre: {
-    type: DataTypes.STRING,
-    allowNull: false
+    type: DataTypes.STRING
   },
   precio: {
-    type: DataTypes.FLOAT,
-    allowNull: false
+    type: DataTypes.DECIMAL(10, 2)
   },
   stock: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
+    type: DataTypes.INTEGER
   }
 }, {
-  tableName: "productos",
-  timestamps: true
+  sequelize, // Esto es OBLIGATORIO
+  modelName: 'productos',
+  tableName: 'productos', // Asegúrate que se llame así en tu MySQL
+  timestamps: false
 });
+
+export default productos;

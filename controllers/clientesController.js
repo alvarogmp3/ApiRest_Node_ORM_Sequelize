@@ -1,4 +1,4 @@
-import * as Base from "./base/productosBaseController.js";
+import * as Base from "./base/clientesBaseController.js";
 export const listar = Base.listar;
 export const obtener = Base.obtener;
 export const crear = Base.crear;
