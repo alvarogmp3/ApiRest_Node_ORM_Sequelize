@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import db from "../database/db.js";
+import db from "../config/db.js";
 
 const LogModel = db.define('logs', {
     id: { 
